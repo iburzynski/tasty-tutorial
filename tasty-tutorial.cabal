@@ -46,7 +46,7 @@ executable tasty-tutorial
 test-suite tasty-tutorial-test
     import:           depends, warnings
     default-language: Haskell2010
-    other-modules:    LookupIPSpec, ParseIPSpec
+    other-modules:    LookupIPSpec, ParseIPSpec, GenIP
     -- other-extensions:
     type:             exitcode-stdio-1.0
     hs-source-dirs:   tests
@@ -55,4 +55,6 @@ test-suite tasty-tutorial-test
         tasty-tutorial,
         hspec,
         tasty,
-        tasty-hspec
+        tasty-hspec,
+        hedgehog,
+        tasty-hedgehog

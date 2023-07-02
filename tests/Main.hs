@@ -2,6 +2,7 @@ module Main (main) where
 
 import LookupIPSpec (lookupIPSpecs)
 import ParseIPSpec (parseIPSpecs)
+import Props (props)
 import Test.Tasty (defaultMain, testGroup)
 import Test.Tasty.Hspec (testSpecs)
 
@@ -11,4 +12,6 @@ main = do
   defaultMain $
     testGroup
       "All Tests"
-      [testGroup "Specs" specs]
+      [ testGroup "Specs" specs,
+        testGroup "Props" props
+      ]

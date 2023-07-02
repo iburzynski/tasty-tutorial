@@ -1,5 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE DeriveAnyClass #-}
+{-# OPTIONS_GHC -Wno-unused-local-binds #-}
 
 module IPTypes where
 
@@ -17,6 +18,13 @@ instance Show IP where
       unfoldIP :: Word32 -> [String] -> [String]
       unfoldIP 0 !componentStrs = componentStrs
       unfoldIP n !componentStrs = unfoldIP (n `div` 256) (show (n `mod` 256) : componentStrs)
+      
+      -- Pad with zeroes where needed
+      unfoldIP' :: Word32 -> [String] -> [String]
+      unfoldIP' 0 !componentStrs 
+        | length componentStrs < 4 = unfoldIP 0 ("0" : componentStrs)
+        | otherwise = componentStrs
+      unfoldIP' n !componentStrs = unfoldIP (n `div` 256) (show (n `mod` 256) : componentStrs)
 
 data IPRange = IPRange IP IP
   deriving (Eq)
@@ -29,6 +37,12 @@ newtype IPRangeDB = IPRangeDB [IPRange]
 
 instance Show IPRangeDB where
   show (IPRangeDB ipRanges) = unlines $ map show ipRanges
+
+instance Semigroup IPRangeDB where
+  (<>) (IPRangeDB iprDB1) (IPRangeDB iprDB2) = IPRangeDB (iprDB1 ++ iprDB2)
+
+instance Monoid IPRangeDB where
+  mempty = IPRangeDB []
 
 type LineNumber = Int
 

@@ -32,7 +32,7 @@ spec_parseIP =
     it "parses one" $
       parseIP "0.0.0.1" `shouldBe` justIP [1]
     it "parses the largest IP address" $
-      parseIP "255.255.255.255" `shouldBe` justIP [maxBound]
+      parseIP "255.255.255.255" `shouldBe` Just (IP maxBound)
     it "parses some random IP address" $
       parseIP "192.168.3.15"
         `shouldBe` justIP [192, 168, 3, 15]
@@ -80,7 +80,7 @@ spec_parseIPRanges :: Spec
 spec_parseIPRanges =
   describe "parseIPRanges" $ do
     it "parses empty list" $
-      parseIPRanges "" `shouldBe` rDBfromParsed []
+      parseIPRanges "" `shouldBe` Right mempty
     it "parses single range" $
       parseIPRanges sample_range1
         `shouldBe` rDBfromParsed [parseIPRange sample_range1]
